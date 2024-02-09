@@ -84,12 +84,18 @@ def take_photo():
             picam2.capture(img_path)
             print("Photo captured:", img_path)
 
+with open(img_path, 'wb') as img_file:
+                picam2.capture(img_file)
+
             # Push photo to GitHub
             git_push()
             print("Photo pushed to GitHub")
 
         # Pause to prevent continuous checking
         time.sleep(0.1)  
+
+
+
 
 
 
