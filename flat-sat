@@ -66,19 +66,31 @@ def img_gen(name):
 
 def take_photo():
     """
-    This function is NOT complete. Takes a photo when the FlatSat is shaken.
-    Replace psuedocode with your own code.
+    This function takes a photo when the FlatSat is shaken.
     """
     while True:
         accelx, accely, accelz = accel_gyro.acceleration
 
-        #CHECKS IF READINGS ARE ABOVE THRESHOLD
-            #PAUSE
-            #name = ""     #First Name, Last Initial  ex. MasonM
-            #TAKE PHOTO
-            #PUSH PHOTO TO GITHUB
-        
-        #PAUSE
+        # Checks if readings are above threshold
+        if accelx > THRESHOLD or accely > THRESHOLD or accelz > THRESHOLD:
+            # Pause
+            time.sleep(0.5) 
+
+            # Name format: First Name, Last Initial  
+            name = ""  
+            img_path = img_gen(name)
+
+            # Take photo
+            picam2.capture(img_path)
+            print("Photo captured:", img_path)
+
+            # Push photo to GitHub
+            git_push()
+            print("Photo pushed to GitHub")
+
+        # Pause to prevent continuous checking
+        time.sleep(0.1)  
+
 
 
 def main():
