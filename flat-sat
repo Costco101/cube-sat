@@ -19,7 +19,7 @@ import board
 from adafruit_lsm6ds.lsm6dsox import LSM6DSOX as LSM6DS
 from adafruit_lis3mdl import LIS3MDL
 from git import Repo
-from picamera2 import Picamera2
+from picamera2 import Picamera2, Preview
 
 #VARIABLES
 THRESHOLD = 0      #Any desired value from the accelerometer
@@ -65,6 +65,7 @@ def img_gen(name):
 
 
 def take_photo():
+
     """
     This function takes a photo when the FlatSat is shaken.
     """
@@ -81,11 +82,13 @@ def take_photo():
             img_path = img_gen(name)
 
             # Take photo
-            picam2.capture(img_path)
-            print("Photo captured:", img_path)
-
-with open(img_path, 'wb') as img_file:
-                picam2.capture(img_file)
+            picam2 = Picamera2()
+            camera_config = picam2.create_preview_configuration()
+            picam2.confure(camera_config)
+            picam.start_preview(Preview.QTGL)
+            picam.start()
+            time.sleep(2)
+            picam2.capture_file("test.jpg")
 
             # Push photo to GitHub
             git_push()
@@ -93,9 +96,6 @@ with open(img_path, 'wb') as img_file:
 
         # Pause to prevent continuous checking
         time.sleep(0.1)  
-
-
-
 
 
 
